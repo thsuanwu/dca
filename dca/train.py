@@ -27,8 +27,6 @@ from .hyper import hyper
 import numpy as np
 import tensorflow as tf
 import keras.optimizers as opt
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
 
 from keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras import backend as K
@@ -41,7 +39,8 @@ def train(adata, network, output_dir=None, optimizer='rmsprop', learning_rate=No
           validation_split=0.1, tensorboard=False, verbose=True, threads=None,
           **kwds):
 
-    K.set_session(tf.Session(config=tf.ConfigProto(intra_op_parallelism_threads=threads, inter_op_parallelism_threads=threads)))
+    tf.compat.v1.keras.backend.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(intra_op_parallelism_threads=threads,
+                                                   inter_op_parallelism_threads=threads)))
     model = network.model
     loss = network.loss
     if output_dir is not None:
@@ -98,12 +97,12 @@ def train(adata, network, output_dir=None, optimizer='rmsprop', learning_rate=No
 
 def train_with_args(args):
 
-    K.set_session(tf.Session(config=tf.ConfigProto(intra_op_parallelism_threads=args.threads,
+    tf.compat.v1.keras.backend.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(intra_op_parallelism_threads=args.threads,
                                                    inter_op_parallelism_threads=args.threads)))
     # set seed for reproducibility
     random.seed(42)
     np.random.seed(42)
-    tf.set_random_seed(42)
+    tf.random.set_seed(42)
     os.environ['PYTHONHASHSEED'] = '0'
 
     # do hyperpar optimization and exit
