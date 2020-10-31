@@ -38,8 +38,8 @@ def train(adata, network, output_dir=None, optimizer='rmsprop', learning_rate=No
           validation_split=0.1, tensorboard=False, verbose=True, threads=None,
           **kwds):
 
-    tf.compat.v1.keras.backend.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(intra_op_parallelism_threads=args.threads,
-                                                   inter_op_parallelism_threads=args.threads)))
+    tf.compat.v1.keras.backend.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(intra_op_parallelism_threads=threads,
+                                                   inter_op_parallelism_threads=threads)))
     model = network.model
     loss = network.loss
     if output_dir is not None:
