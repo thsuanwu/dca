@@ -285,7 +285,7 @@ class NBConstantDispAutoencoder(Autoencoder):
 
         super().write(adata, file_path, mode, colnames=colnames)
         if 'X_dca_dispersion' in adata.var_keys():
-            write_text_matrix(adata.var['X_dca_dispersion'].reshape(1, -1),
+            write_text_matrix(adata.var['X_dca_dispersion'].values.reshape(1, -1),
                               os.path.join(file_path, 'dispersion.tsv'),
                               colnames=colnames, transpose=True)
 
